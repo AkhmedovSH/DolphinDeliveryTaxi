@@ -1,10 +1,9 @@
-var express = require('express'),
-    http = require('http');
+var express = require("express"),
+  http = require("http");
 var app = express();
 var server = http.createServer(app);
-var io = require('socket.io').listen(server);
+var io = require("socket.io").listen(server);
 var port = process.env.PORT || 3000;
-
 
 /* var connection = require('express-myconnection');
 var mysql = require('mysql');
@@ -27,10 +26,12 @@ app.get("/", function(req, res) {
   res.sendFile(__dirname + "/index.html");
 });
 
-io.on('connection', function(socket) {
-  console.log('connected');
-  
-  socket.emit('chat message', 'Hello from Me');
+io.on("connection", function(socket) {
+  console.log("connected");
+
+  socket.on("chat message", function(msg) {
+    io.emit("chat message", msg);
+  });
 });
 
 /* var objectData = { parent_id: 11, titleRus: "123", code: "123" };
