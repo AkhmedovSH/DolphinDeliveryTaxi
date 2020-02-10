@@ -1,9 +1,12 @@
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var express = require('express'),
+    http = require('http');
+var app = express();
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
 var port = process.env.PORT || 3000;
 
-var connection = require('express-myconnection');
+
+/* var connection = require('express-myconnection');
 var mysql = require('mysql');
 
 app.use(
@@ -18,26 +21,28 @@ app.use(
     },
     'pool'
   ) //or single
-);
+); */
 
-app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/index.html');
+app.get("/", function(req, res) {
+  res.sendFile(__dirname + "/index.html");
 });
 
-/* io.on('connection', function(socket) {
+io.on('connection', function(socket) {
   console.log('connected');
   
-  socket.emit('welcome', 'Hello from Me');
-}); */
-
-var objectData = { parent_id: 11, titleRus: '123', code: '123' };
-
-io.of('/games').on('connection', socket => {
-  socket.emit('welcome', objectData);
-
-  socket.on("")
+  socket.emit('chat message', 'Hello from Me');
 });
 
-http.listen(port, function() {
-  console.log('listening on *:' + port);
+/* var objectData = { parent_id: 11, titleRus: "123", code: "123" };
+
+io.of("/games").on("connection", socket => {
+  socket.emit("welcome", objectData);
+}); */
+
+/* http.listen(port, function() {
+  console.log("listening on *:" + port);
+}); */
+
+server.listen(3000, function() {
+  console.log("listening on *:" + port);
 });
